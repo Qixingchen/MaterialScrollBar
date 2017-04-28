@@ -1,3 +1,10 @@
+# Fork
+ add set adapter
+ 
+ use JitPack for this Fork
+ 
+ [![Release](https://jitpack.io/v/Qixingchen/MaterialScrollBar.svg?style=flat-square)](https://jitpack.io/#Qixingchen/MaterialScrollBar)
+
 # MaterialScrollBar
 
 [![Apache 2.0](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![](https://jitpack.io/v/turing-tech/MaterialScrollBar.svg)](https://jitpack.io/#turing-tech/MaterialScrollBar) [![Version](https://img.shields.io/badge/API-11%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=7) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MaterialScrollBar-blue.svg?style=flat)](https://android-arsenal.com/details/1/2441)

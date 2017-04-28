@@ -81,6 +81,7 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
 
     //Associated Objects
     RecyclerView recyclerView;
+    RecyclerView.Adapter mAdapter;
     private int seekId = 0; //ID of the associated RecyclerView
     ScrollingUtilities scrollUtils = new ScrollingUtilities(this);
     SwipeRefreshLayout swipeRefreshLayout;
@@ -94,9 +95,14 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
 
     //Programmatic constructor
     MaterialScrollBar(Context context, RecyclerView recyclerView, boolean lightOnTouch){
+       this(context,recyclerView,recyclerView.getAdapter(),lightOnTouch);
+    }
+
+    MaterialScrollBar(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter,boolean lightOnTouch){
         super(context);
 
         this.recyclerView = recyclerView;
+        this.mAdapter = adapter;
 
         addView(setUpHandleTrack(context)); //Adds the handle track
         addView(setUpHandle(context, lightOnTouch)); //Adds the handle
@@ -208,12 +214,17 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
     }
 
     public T setRecyclerView(RecyclerView rv){
+        return setRecyclerView(rv,rv.getAdapter());
+    }
+
+    public T setRecyclerView(RecyclerView rv , RecyclerView.Adapter adapter){
         if(seekId != 0){
             throw new IllegalStateException("There is already a recyclerView set by XML.");
         } else if (recyclerView != null){
             throw new IllegalStateException("There is already a recyclerView set.");
         }
         recyclerView = rv;
+        mAdapter = adapter;
         generalSetup();
         return (T)this;
     }
@@ -226,6 +237,7 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
 
         if(seekId != 0){
             recyclerView = (RecyclerView) getRootView().findViewById(seekId);
+            mAdapter = recyclerView.getAdapter();
             generalSetup();
         }
     }
@@ -243,7 +255,9 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
 
         onSetup.run();
 
-        a.recycle();
+        if (a!=null) {
+            a.recycle();
+        }
 
         //Hides the view
         TranslateAnimation anim = new TranslateAnimation(
@@ -366,8 +380,8 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
     //CHAPTER III - CUSTOMISATION METHODS
 
     private void checkCustomScrollingInterface(){
-        if((recyclerView.getAdapter() instanceof  ICustomScroller)){
-            scrollUtils.customScroller = (ICustomScroller) recyclerView.getAdapter();
+        if((mAdapter instanceof  ICustomScroller)){
+            scrollUtils.customScroller = (ICustomScroller) mAdapter;
         }
     }
 
@@ -569,7 +583,7 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
      */
     private void setupIndicator(Indicator indicator, boolean addSpaceSide){
         MaterialScrollBar.this.indicator = indicator;
-        indicator.testAdapter(recyclerView.getAdapter());
+        indicator.testAdapter(mAdapter);
         indicator.setRTL(rtl);
         indicator.linkToScrollBar(MaterialScrollBar.this, addSpaceSide);
         indicator.setTextColour(textColour);
@@ -679,7 +693,7 @@ public abstract class MaterialScrollBar<T> extends RelativeLayout {
     }
 
     protected void onDown(MotionEvent event){
-        if (indicator != null && indicator.getVisibility() == INVISIBLE && recyclerView.getAdapter() != null) {
+        if (indicator != null && indicator.getVisibility() == INVISIBLE && mAdapter != null) {
             indicator.setVisibility(VISIBLE);
             if(Build.VERSION.SDK_INT >= 12){
                 indicator.setAlpha(0F);

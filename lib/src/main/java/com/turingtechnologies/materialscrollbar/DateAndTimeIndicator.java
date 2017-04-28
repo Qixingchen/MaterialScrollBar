@@ -57,7 +57,7 @@ public class DateAndTimeIndicator extends Indicator<IDateableAdapter, DateAndTim
             text += DateFormat.getTimeFormat(context).format(date);
         }
         if(includeMonth){
-            text += " " + months[calendar.get(Calendar.MONTH)].substring(0, 3);
+            text += " " + months[calendar.get(Calendar.MONTH)].substring(0, 2);
         }
         if(includeDay){
             int day = calendar.get(Calendar.DAY_OF_MONTH);

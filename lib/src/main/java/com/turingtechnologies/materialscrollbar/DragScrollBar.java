@@ -42,6 +42,10 @@ public class DragScrollBar extends MaterialScrollBar<DragScrollBar>{
         super(context, recyclerView, lightOnTouch);
     }
 
+    public DragScrollBar(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter, boolean lightOnTouch){
+        super(context, recyclerView, adapter, lightOnTouch);
+    }
+
     boolean held = false;
 
     public DragScrollBar setDraggableFromAnywhere(boolean draggableFromAnywhere){
